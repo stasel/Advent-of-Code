@@ -4,15 +4,11 @@ export async function loadFile(fileName) {
     return await fs.readFile(fileName, {'encoding': 'utf8'});
 }
 
-export async function loadIntArray(fileName) {
+export async function loadIntArray(fileName, separator=",") {
     const fileContents = await fs.readFile(fileName, {'encoding': 'utf8'});
     return fileContents
-        .split(",")
+        .split(separator)
         .map(x => parseInt(x))
-}
-
-export function sum(array) {
-    return array.reduce((a, b) => a + b, 0);
 }
 
 // Array operations
