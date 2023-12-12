@@ -32,7 +32,7 @@ const part1 = async () => {
     console.log("Part 1 solution: ", solution);
 };
 
-async function part2() {
+const part2 = async () => {
     const file = await utils.loadFile('./input');
     const lines = file.split("\n");
     const solution = lines
