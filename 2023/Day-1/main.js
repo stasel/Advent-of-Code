@@ -28,7 +28,6 @@ const part1 = async () => {
     const lines = file.split("\n");
 
     const solution = lines.map(extractDigits).sum();
-        
     console.log("Part 1 solution: ", solution);
 };
 
@@ -44,4 +43,4 @@ const part2 = async () => {
 };
 
 await part1();
-await part2(); // Not 57374 or 57325 or 57354
+await part2();
