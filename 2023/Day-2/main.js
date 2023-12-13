@@ -32,6 +32,20 @@ const isValidGame = (gameInput, maxRed, maxGreen, maxBlue) => {
     });
 }
 
+const calcMinCubesForGame = (game) => {
+    console.log(game);
+    
+    const reds = game.map(round => round.find(pair => pair.color === 'red')?.value ?? 0);
+    const greens = game.map(round => round.find(pair => pair.color === 'green')?.value ?? 0);
+    const blues = game.map(round => round.find(pair => pair.color === 'blue')?.value ?? 0);
+
+    return {
+        red: reds.max(),
+        green: greens.max(),
+        blue: blues.max()
+    };
+};
+
 const parseGameFile = async () => { 
     const file = await utils.loadFile('./input');
     return  file.split("\n")
@@ -55,7 +69,12 @@ const part1 = async () => {
 
 const part2 = async () => {
     const gameData = await parseGameFile();
-    console.log("Part 2 solution: ", 0);
+    const solution = gameData
+        .map(game => calcMinCubesForGame(game.data))
+        .map(minCubes => minCubes.red * minCubes.green * minCubes.blue)
+        .sum();
+
+    console.log("Part 2 solution: ", solution);
 };
 
 await part1();
