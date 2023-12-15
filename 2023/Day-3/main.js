@@ -11,7 +11,8 @@ const getSymbolsMap = (input) => {
         const line = lines[row].split('');
         for (let col = 0; col < line.length; col++) {
             if (isSymbol(line[col])) {
-                symbols.push({ row, col });
+                const char = line[col];
+                symbols.push({ row, col, char });
             }
         }
     }
@@ -30,12 +31,31 @@ const isAjestentToSymbol = (row, col, length, symbols) => {
         }
         // Ajestent row, 
         if ((symbol.row === row + 1 || symbol.row === row - 1) 
-            && symbol.col >= col -1 && symbol.col <= col + length) {
+            && symbol.col >= col - 1 && symbol.col <= col + length) {
             return true;
         }
         return false;
     });
 };
+
+const getAjestentNumbers = (symbol, numbers) => {
+    return numbers.filter(number => {
+        // Same row in the begining
+        if(number.row === symbol.row && symbol.col === number.col -1) {
+            return true;
+        }
+        // Same row in the end
+        if(number.row === symbol.row && symbol.col === number.col + number.length) {
+            return true;
+        }
+        // Ajestent row, 
+        if ((number.row === symbol.row + 1 || number.row === symbol.row - 1) 
+            && symbol.col >= number.col - 1 && symbol.col <= number.col + number.length) {
+            return true;
+        }
+        return false;
+    });
+}
 
 const getNumberMap = (input) => {
     let numberMap = [];
@@ -55,7 +75,6 @@ const part1 = async () => {
     const file = await utils.loadFile('./input');
     const symbols = getSymbolsMap(file);
     const numbers = getNumberMap(file);
-    console.log(numbers);
     const solution = numbers
         .filter(number => isAjestentToSymbol(number.row, number.col, number.length, symbols))
         .map(number => number.value)
@@ -64,7 +83,17 @@ const part1 = async () => {
 };
 
 const part2 = async () => {
-    console.log("Part 2 solution: ", 0);
+    const file = await utils.loadFile('./input');
+    const symbols = getSymbolsMap(file);
+    const numbers = getNumberMap(file);
+    const solution = symbols
+        .filter(symbol => symbol.char === '*')
+        .map(symbol => getAjestentNumbers(symbol, numbers))
+        .filter(adjestentNumbers => adjestentNumbers.length == 2)
+        .map(adjestentNumbers => adjestentNumbers[0].value * adjestentNumbers[1].value)
+        .sum();
+    
+    console.log("Part 2 solution: ", solution);
 };
 
 await part1();
