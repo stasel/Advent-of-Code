@@ -8,6 +8,14 @@ const parseInput = (input) => {
     return races;
 };
 
+const parseInputIgnoreSpaces = (input) => {
+    const [timeData, distanceData] = input.split('\n');
+    const time = Number.parseInt(timeData.replace(/[^\d]/g,''));
+    const distance = Number.parseInt(distanceData.replace(/[^\d]/g,''));
+    return {time, distance};
+};
+
+
 const resolveRace = (race) => {
     let options = [];
     for (let i = 0; i <= race.time; i++) {
@@ -30,7 +38,10 @@ const part1 = async () => {
 };
 
 const part2 = async () => {
-    console.log("Part 2 solution: ", 0); 
+    const file = await utils.loadFile('./input');
+    const race = parseInputIgnoreSpaces(file);
+    const solution = resolveRace(race).filter(option => option > race.distance).length;
+    console.log("Part 2 solution: ", solution); 
 };
 
 await part1();
